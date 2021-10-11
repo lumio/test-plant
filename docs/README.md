@@ -24,4 +24,7 @@ stop
 </details>
 <!-- puml:123 -->
 
+<span style="color:orange">test</span>
+<font color="green">test</font>
+
 With some stuff in between
