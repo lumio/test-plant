@@ -2,7 +2,7 @@
 
 Just a test to auto render PlantUML
 
-<div>
+<div display="hidden">
 
 ```puml
 @startuml
