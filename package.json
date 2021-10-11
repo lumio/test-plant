@@ -1,0 +1,26 @@
+{
+  "name": "test-plant",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lumio/test-plant.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lumio/test-plant/issues"
+  },
+  "homepage": "https://github.com/lumio/test-plant#readme",
+  "dependencies": {
+    "uuid": "^8.3.2"
+  }
+}

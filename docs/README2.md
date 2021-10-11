@@ -2,11 +2,6 @@
 
 Just a test to auto render PlantUML
 
-<!-- puml:123 -->
-![alt](generated-assets/123.png)
-<details>
-    <summary>PlantUML source</summary>
-
 ```puml
 @startuml
 start
@@ -21,6 +16,5 @@ endif
 stop
 @enduml
 ```
-</details>
 
 With some stuff in between
