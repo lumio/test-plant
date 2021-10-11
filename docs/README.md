@@ -2,7 +2,8 @@
 
 Just a test to auto render PlantUML
 
-<div class="highlight">
+<details>
+    <summary>Show source</summary>
 
 ```puml
 @startuml
@@ -18,7 +19,6 @@ endif
 stop
 @enduml
 ```
-
-</div>
+</details>
 
 With some stuff in between
