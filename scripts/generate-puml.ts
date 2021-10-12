@@ -21,9 +21,9 @@ type Code = string;
 
 const PUML_REGEX = new RegExp(
   "(<!-- puml:(?<hash>.+?) -->\\s+!\\[(?<alt>.+?)\\]\\((?<file>.+?)\\)" +
-    "\\s+<details>\\s+<summary>(?<toggleText>.+?)<\\/summary>\\s+```puml\\s+(?<code1>[\\s\\S]+?)```\\s+<\\/details>)" +
+    "\\s+<details>\\s+<summary>(?<toggleText>.+?)<\\/summary>\\s+```puml( (?<customAlt1>.+?))?\\s+(?<code1>[\\s\\S]+?)```\\s+<\\/details>)" +
     "|" +
-    "(```puml\\s+(?<code2>[\\s\\S]+?)```)",
+    "(```puml( (?<customAlt2>.+?))?\\s+(?<code2>[\\s\\S]+?)```)",
   "gm"
 );
 
@@ -87,6 +87,10 @@ function generatePlantUML(code: string, hash?: string): Promise<FileName> {
   });
 }
 
+/**
+ * Processes a file and either generates
+ * @param file
+ */
 async function processFile(file: FileName) {
   const fullFileName = path.resolve(__dirname, INPUT_FILE_CWD, file);
   const raw = fs.readFileSync(fullFileName, "utf8");
@@ -117,7 +121,7 @@ async function processFile(file: FileName) {
           groups.code1,
           codeHash,
           RELATIVE_ASSET_FOLDER,
-          groups.alt || DEFAULT_ALT,
+          groups.customAlt1 || groups.alt || DEFAULT_ALT,
           groups.toggleText || DEFAULT_TOGGLE_TEXT
         );
       } else if (!diff && REWRITE_ALL) {
@@ -131,7 +135,12 @@ async function processFile(file: FileName) {
       const codeHash = getHash(groups.code2);
       hashes.push(codeHash);
       hashesToGenerate[codeHash] = groups.code2;
-      return generateHtml(groups.code2, codeHash, RELATIVE_ASSET_FOLDER);
+      return generateHtml(
+        groups.code2,
+        codeHash,
+        RELATIVE_ASSET_FOLDER,
+        groups.customAlt2
+      );
     }
 
     return "";
@@ -145,7 +154,7 @@ async function processFile(file: FileName) {
     } catch (e) {
       console.error(`Error while processing ${file}!`);
       console.error(`Code:\n${code}`);
-      throw e;
+      console.error(e);
     }
   }
 
@@ -156,6 +165,11 @@ async function processFile(file: FileName) {
   return hashes;
 }
 
+/**
+ * Checks the integrity of the generated-assets folder
+ *
+ * @param writtenAssets
+ */
 async function checkGeneratedAssets(writtenAssets: Set<string>) {
   const generatedAssets = await readdir(path.resolve(__dirname, OUTPUT_FILES));
   for (const asset of generatedAssets) {
