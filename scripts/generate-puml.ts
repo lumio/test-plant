@@ -9,7 +9,6 @@ import fastGlob from "fast-glob";
 const REWRITE_ALL = Boolean(process.env.REWRITE_ALL) || false;
 const INPUT_FILE_GLOB = "**/*.md";
 const INPUT_FILE_CWD = "../docs";
-const RELATIVE_ASSET_FOLDER = "./generated-assets";
 const OUTPUT_FILES = "../docs/generated-assets";
 const OUTPUT_FORMAT = "svg";
 
@@ -40,13 +39,16 @@ function getFileName(hash: string, base = "") {
 function generateHtml(
   code: Code,
   hash: string,
-  base = "",
+  sourceFileName: string,
   alt = DEFAULT_ALT,
   toggle = DEFAULT_TOGGLE_TEXT
 ) {
+  const sourceDir = path.dirname(sourceFileName);
+  const assetDir = path.resolve(__dirname, OUTPUT_FILES);
+  const relativeAssetDir = path.relative(sourceDir, assetDir);
   return [
     `<!-- puml:${hash} -->`,
-    `![${alt}](${getFileName(hash, base)})`,
+    `![${alt}](${getFileName(hash, relativeAssetDir)})`,
     "<details>",
     `<summary>${toggle}</summary>`,
     "",
@@ -117,10 +119,11 @@ async function processFile(file: FileName) {
 
       if (diff) {
         hashesToGenerate[codeHash] = groups.code1;
+        hashes.push(codeHash);
         return generateHtml(
           groups.code1,
           codeHash,
-          RELATIVE_ASSET_FOLDER,
+          fullFileName,
           groups.customAlt1 || groups.alt || DEFAULT_ALT,
           groups.toggleText || DEFAULT_TOGGLE_TEXT
         );
@@ -138,7 +141,7 @@ async function processFile(file: FileName) {
       return generateHtml(
         groups.code2,
         codeHash,
-        RELATIVE_ASSET_FOLDER,
+        fullFileName,
         groups.customAlt2
       );
     }
