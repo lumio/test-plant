@@ -4,8 +4,8 @@ import { createHash } from "crypto";
 import { exec } from "child_process";
 import stream from "stream";
 
-const ASSET_FOLDER = "generated-assets";
-const OUTPUT_FILES = "../docs/" + ASSET_FOLDER;
+const RELATIVE_ASSET_FOLDER = "./generated-assets";
+const OUTPUT_FILES = "../docs/generated-assets";
 const OUTPUT_FORMAT = "svg";
 const DEFAULT_ALT = "UML";
 const DEFAULT_TOGGLE_TEXT = "Show/Hide plantUML code";
@@ -31,16 +31,21 @@ function getFileName(hash: string, base = "") {
   return path.join(base, `${hash}.${OUTPUT_FORMAT}`);
 }
 
-function generateHtml(code: Code, hash: string) {
+function generateHtml(
+  code: Code,
+  hash: string,
+  base = "",
+  alt = DEFAULT_ALT,
+  toggle = DEFAULT_TOGGLE_TEXT
+) {
   return [
     `<!-- puml:${hash} -->`,
-    `![${DEFAULT_ALT}](${getFileName(hash)})`,
+    `![${alt}](${getFileName(hash, base)})`,
     "<details>",
-    `<summary>${DEFAULT_TOGGLE_TEXT}</summary>`,
+    `<summary>${toggle}</summary>`,
     "",
     "```puml",
-    code,
-    "```",
+    code + "```",
     "</details>",
   ].join("\n");
 }
@@ -80,6 +85,7 @@ function generatePlantUML(code: string, hash?: string): Promise<FileName> {
 
 async function processFile(file: FileName) {
   const raw = fs.readFileSync(file, "utf8");
+  const hashes: string[] = [];
   const hashesToGenerate: { [key: string]: Code } = {};
   const processed = raw.replace(PUML_REGEX, (match) => {
     const parsed = PUML_REGEX.exec(match);
@@ -93,11 +99,28 @@ async function processFile(file: FileName) {
     }
 
     if (groups.code1) {
-      console.log(groups);
+      const currentHash = groups.hash;
+      const codeHash = getHash(groups.code1);
+      const diff = currentHash !== codeHash;
+
+      if (diff) {
+        hashesToGenerate[codeHash] = groups.code1;
+        return generateHtml(
+          groups.code1,
+          codeHash,
+          RELATIVE_ASSET_FOLDER,
+          groups.alt || DEFAULT_ALT,
+          groups.toggleText || DEFAULT_TOGGLE_TEXT
+        );
+      } else {
+        hashes.push(currentHash);
+      }
+      return match;
     } else if (groups.code2) {
       const codeHash = getHash(groups.code2);
+      hashes.push(codeHash);
       hashesToGenerate[codeHash] = groups.code2;
-      return generateHtml(groups.code2, codeHash);
+      return generateHtml(groups.code2, codeHash, RELATIVE_ASSET_FOLDER);
     }
 
     return "";
@@ -105,15 +128,24 @@ async function processFile(file: FileName) {
 
   for (const entry of Object.entries(hashesToGenerate)) {
     const [codeHash, code] = entry;
-    console.log(codeHash);
-    // const fileName = await generatePlantUML(groups.code2);
+    try {
+      console.log(`Generating ${codeHash}...`);
+      await generatePlantUML(code, codeHash);
+    } catch (e) {
+      console.error(`Error while processing ${file}!`);
+      console.error(`Code:\n${code}`);
+      throw e;
+    }
   }
 
-  console.log(processed);
+  fs.writeFileSync(file, processed);
+
+  return hashes;
 }
 
 async function main() {
   await processFile(path.join(__dirname, "../docs/README2.md"));
+  console.log("Done");
 }
 main()
   .then(() => process.exit(0))
