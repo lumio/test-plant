@@ -1,5 +1,6 @@
 import path from "path";
 import fs from "fs";
+import { readdir, unlink } from "fs/promises";
 import { createHash } from "crypto";
 import { exec } from "child_process";
 import stream from "stream";
@@ -11,6 +12,7 @@ const INPUT_FILE_CWD = "../docs";
 const RELATIVE_ASSET_FOLDER = "./generated-assets";
 const OUTPUT_FILES = "../docs/generated-assets";
 const OUTPUT_FORMAT = "svg";
+
 const DEFAULT_ALT = "UML";
 const DEFAULT_TOGGLE_TEXT = "Show/Hide plantUML code";
 
@@ -154,16 +156,45 @@ async function processFile(file: FileName) {
   return hashes;
 }
 
+async function checkGeneratedAssets(writtenAssets: Set<string>) {
+  const generatedAssets = await readdir(path.resolve(__dirname, OUTPUT_FILES));
+  for (const asset of generatedAssets) {
+    // Ignore other generated files
+    if (!asset.endsWith(`.${OUTPUT_FORMAT}`)) {
+      continue;
+    }
+
+    // Ignore assets that are in use
+    if (writtenAssets.has(asset)) {
+      continue;
+    }
+
+    // Remove unused asset
+    const hash = asset.substring(0, asset.length - OUTPUT_FORMAT.length - 1);
+    console.log(`Removing ${hash}...`);
+    await unlink(path.resolve(__dirname, OUTPUT_FILES, asset));
+  }
+
+  writtenAssets.forEach((writtenAsset) => {
+    if (!generatedAssets.includes(writtenAsset)) {
+      throw new Error(
+        `Missing asset ${writtenAsset}! Run script with env var REWRITE_ALL=1`
+      );
+    }
+  });
+}
+
 async function main() {
-  const writtenHashes = new Set();
+  const writtenAssets: Set<string> = new Set();
   const files = await fastGlob(INPUT_FILE_GLOB, {
     cwd: path.resolve(__dirname, INPUT_FILE_CWD),
   });
   for (const file of files) {
     const hashes = await processFile(file);
-    hashes.forEach((hash) => writtenHashes.add(hash));
+    hashes.forEach((hash) => writtenAssets.add(`${hash}.${OUTPUT_FORMAT}`));
   }
-  console.log(writtenHashes);
+
+  await checkGeneratedAssets(writtenAssets);
   console.log("Done");
 }
 main()
