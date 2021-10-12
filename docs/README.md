@@ -7,7 +7,7 @@ Just a test to auto render PlantUML
 <details>
     <summary>PlantUML source</summary>
 
-```puml
+```puml test
 @startuml
 start
 
