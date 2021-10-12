@@ -58,7 +58,11 @@ function generateHtml(
   ].join("\n");
 }
 
-function generatePlantUML(code: string, hash?: string): Promise<FileName> {
+function generatePlantUML(
+  code: string,
+  hash?: string,
+  sourceFile?: string
+): Promise<FileName> {
   if (code == null) {
     throw new Error("No code given");
   }
@@ -72,7 +76,12 @@ function generatePlantUML(code: string, hash?: string): Promise<FileName> {
         cwd: path.resolve(__dirname, OUTPUT_FILES),
       },
       (err, result) => {
-        if (err) {
+        if (err && err.message?.includes("Syntax Error")) {
+          const printFile = sourceFile || `one file`;
+          console.error(
+            `Error: There was a syntax error in ${sourceFile}! See processed file for more info.`
+          );
+        } else if (err) {
           throw err;
         }
 
@@ -100,6 +109,7 @@ async function processFile(file: FileName) {
 
   const hashes: string[] = [];
   const hashesToGenerate: { [key: string]: Code } = {};
+  const hashesFileMap: { [key: string]: FileName } = {};
 
   const processed = raw.replace(PUML_REGEX, (match) => {
     const parsed = PUML_REGEX.exec(match);
@@ -119,6 +129,7 @@ async function processFile(file: FileName) {
 
       if (diff) {
         hashesToGenerate[codeHash] = groups.code1;
+        hashesFileMap[codeHash] = file;
         hashes.push(codeHash);
         return generateHtml(
           groups.code1,
@@ -129,6 +140,7 @@ async function processFile(file: FileName) {
         );
       } else if (!diff && REWRITE_ALL) {
         hashesToGenerate[codeHash] = groups.code1;
+        hashesFileMap[codeHash] = file;
         hashes.push(codeHash);
       } else {
         hashes.push(currentHash);
@@ -138,6 +150,7 @@ async function processFile(file: FileName) {
       const codeHash = getHash(groups.code2);
       hashes.push(codeHash);
       hashesToGenerate[codeHash] = groups.code2;
+      hashesFileMap[codeHash] = file;
       return generateHtml(
         groups.code2,
         codeHash,
@@ -153,7 +166,7 @@ async function processFile(file: FileName) {
     const [codeHash, code] = entry;
     try {
       console.log(`Generating ${codeHash}...`);
-      await generatePlantUML(code, codeHash);
+      await generatePlantUML(code, codeHash, hashesFileMap[codeHash]);
     } catch (e) {
       console.error(`Error while processing ${file}!`);
       console.error(`Code:\n${code}`);
