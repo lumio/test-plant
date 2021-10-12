@@ -3,7 +3,11 @@ import fs from "fs";
 import { createHash } from "crypto";
 import { exec } from "child_process";
 import stream from "stream";
+import fastGlob from "fast-glob";
 
+const REWRITE_ALL = Boolean(process.env.REWRITE_ALL) || false;
+const INPUT_FILE_GLOB = "**/*.md";
+const INPUT_FILE_CWD = "../docs";
 const RELATIVE_ASSET_FOLDER = "./generated-assets";
 const OUTPUT_FILES = "../docs/generated-assets";
 const OUTPUT_FORMAT = "svg";
@@ -50,8 +54,6 @@ function generateHtml(
   ].join("\n");
 }
 
-function updateGeneratedHtml(code: string, hash: string) {}
-
 function generatePlantUML(code: string, hash?: string): Promise<FileName> {
   if (code == null) {
     throw new Error("No code given");
@@ -84,9 +86,13 @@ function generatePlantUML(code: string, hash?: string): Promise<FileName> {
 }
 
 async function processFile(file: FileName) {
-  const raw = fs.readFileSync(file, "utf8");
+  const fullFileName = path.resolve(__dirname, INPUT_FILE_CWD, file);
+  const raw = fs.readFileSync(fullFileName, "utf8");
+  const fileHash = getHash(raw);
+
   const hashes: string[] = [];
   const hashesToGenerate: { [key: string]: Code } = {};
+
   const processed = raw.replace(PUML_REGEX, (match) => {
     const parsed = PUML_REGEX.exec(match);
     if (parsed == null) {
@@ -112,6 +118,9 @@ async function processFile(file: FileName) {
           groups.alt || DEFAULT_ALT,
           groups.toggleText || DEFAULT_TOGGLE_TEXT
         );
+      } else if (!diff && REWRITE_ALL) {
+        hashesToGenerate[codeHash] = groups.code1;
+        hashes.push(codeHash);
       } else {
         hashes.push(currentHash);
       }
@@ -138,13 +147,23 @@ async function processFile(file: FileName) {
     }
   }
 
-  fs.writeFileSync(file, processed);
+  if (fileHash !== getHash(processed)) {
+    fs.writeFileSync(fullFileName, processed);
+  }
 
   return hashes;
 }
 
 async function main() {
-  await processFile(path.join(__dirname, "../docs/README2.md"));
+  const writtenHashes = new Set();
+  const files = await fastGlob(INPUT_FILE_GLOB, {
+    cwd: path.resolve(__dirname, INPUT_FILE_CWD),
+  });
+  for (const file of files) {
+    const hashes = await processFile(file);
+    hashes.forEach((hash) => writtenHashes.add(hash));
+  }
+  console.log(writtenHashes);
   console.log("Done");
 }
 main()
