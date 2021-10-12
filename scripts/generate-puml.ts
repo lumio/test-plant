@@ -13,16 +13,21 @@ const OUTPUT_FILES = "../docs/generated-assets";
 const OUTPUT_FORMAT = "svg";
 
 const DEFAULT_ALT = "UML";
-const DEFAULT_TOGGLE_TEXT = "Show/Hide plantUML code";
+const DEFAULT_TOGGLE_TEXT = "source code";
 
 type FileName = string;
 type Code = string;
 
 const PUML_REGEX = new RegExp(
-  "(<!-- puml:(?<hash>.+?) -->\\s+!\\[(?<alt>.+?)\\]\\((?<file>.+?)\\)" +
+  // Just to make sure that indented code blocks are getting ignored (e.g. giving an example on how to use this script
+  "(    ```puml[\\s\\S]+?```)" +
+    "|" +
+    // Parsing an already processed code block
+    "(<!-- puml:(?<hash>.+?) -->\\s+!\\[(?<alt>.+?)\\]\\((?<file>.+?)\\)" +
     "\\s+<details>\\s+<summary>(?<toggleText>.+?)<\\/summary>\\s+```puml( (?<customAlt1>.+?))?\\s+(?<code1>[\\s\\S]+?)```\\s+<\\/details>)" +
     "|" +
-    "(```puml( (?<customAlt2>.+?))?\\s+(?<code2>[\\s\\S]+?)```)",
+    // Parsing a regular code block
+    "((?!my)```puml( (?<customAlt2>.+?))?\\s+(?<code2>[\\s\\S]+?)```)",
   "gm"
 );
 
@@ -159,7 +164,7 @@ async function processFile(file: FileName) {
       );
     }
 
-    return "";
+    return match;
   });
 
   for (const entry of Object.entries(hashesToGenerate)) {
