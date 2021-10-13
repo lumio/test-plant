@@ -6,8 +6,8 @@
 npx ts-node scripts/generate-puml.ts
 ```
 
-<!-- puml:e44da9ae3c8b868ab84cc2a9f2e9598f185d9a29047a8576a068897874b4ce39 -->
-![UML](docs/generated-assets/e44da9ae3c8b868ab84cc2a9f2e9598f185d9a29047a8576a068897874b4ce39.svg)
+<!-- puml:3d69686b72944c72dca07e8358d9d7544986d9aecc994f7e31707b6d8587324e -->
+![UML](docs/generated-assets/3d69686b72944c72dca07e8358d9d7544986d9aecc994f7e31707b6d8587324e.svg)
 <details>
 <summary>source code</summary>
 
