@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs";
 import { readdir, unlink } from "fs/promises";
 import { createHash } from "crypto";
-import { exec } from "child_process";
+import { spawn } from "child_process";
 import stream from "stream";
 import fastGlob from "fast-glob";
 
@@ -12,15 +12,9 @@ import fastGlob from "fast-glob";
 const INPUT_FILE_GLOB = "**/*.md";
 
 /**
- * TODO: should be irrelevant
- * This one is a bit confusing still. Basically the root directory of the docs
- */
-const INPUT_FILE_CWD = "../docs";
-
-/**
  * The output folder, relative to this script
  */
-const OUTPUT_FOLDER = "../docs/generated-assets";
+const OUTPUT_FOLDER = path.resolve(__dirname, "../docs/generated-assets");
 
 /**
  * The image format. Possible values are svg and png
@@ -166,7 +160,7 @@ function generateHtml(
  * @param hash       The hashed code value to use for the filename
  */
 function generatePlantUML(
-  sourceFile?: string,
+  sourceFile: string,
   code: string,
   hash?: string
 ): Promise<FileName> {
@@ -175,26 +169,26 @@ function generatePlantUML(
   }
 
   const codeHash = hash || getHash(code);
-  const fileName = getFileName(codeHash);
+  const fileName = path.resolve(OUTPUT_FOLDER, `${codeHash}.${OUTPUT_FORMAT}`);
   return new Promise((resolve) => {
-    const child = exec(
-      `docker run --rm -i think/plantuml -t${OUTPUT_FORMAT} > ${fileName}`,
-      {
-        cwd: path.resolve(__dirname, OUTPUT_FOLDER),
-      },
-      (err, result) => {
-        if (err && err.message?.includes("Syntax Error")) {
-          const printFile = sourceFile || `one file`;
-          console.error(
-            `Error: There was a syntax error in ${sourceFile}! See processed file for more info.`
-          );
-        } else if (err) {
-          throw err;
-        }
-
-        resolve(fileName);
-      }
-    );
+    const output: Buffer[] = [];
+    const child = spawn("docker", [
+      "run",
+      "--rm",
+      "-i",
+      "think/plantuml",
+      `-t${OUTPUT_FORMAT}`,
+    ]);
+    child.stderr.on("data", (chunk) => {
+      process.stderr.write(chunk);
+    });
+    child.stdout.on("data", (chunk) => {
+      output.push(chunk);
+    });
+    child.on("close", (res) => {
+      fs.writeFileSync(fileName, Buffer.concat(output));
+      resolve(fileName);
+    });
     if (!child.stdin) {
       throw new Error("Missing stdin stream");
     }
@@ -211,8 +205,7 @@ function generatePlantUML(
  * @param file The file to be processed
  */
 async function processFile(file: FileName) {
-  const fullFileName = path.resolve(__dirname, INPUT_FILE_CWD, file);
-  const raw = fs.readFileSync(fullFileName, "utf8");
+  const raw = fs.readFileSync(file, "utf8");
   const fileHash = getHash(raw);
 
   const hashes: string[] = [];
@@ -241,7 +234,7 @@ async function processFile(file: FileName) {
         hashesFileMap[codeHash] = file;
         hashes.push(codeHash);
         return generateHtml(
-          fullFileName,
+          file,
           groups.code1,
           codeHash,
           groups.customAlt1 || groups.alt || DEFAULT_ALT,
@@ -263,12 +256,7 @@ async function processFile(file: FileName) {
       hashes.push(codeHash);
       hashesToGenerate[codeHash] = groups.code2;
       hashesFileMap[codeHash] = file;
-      return generateHtml(
-        fullFileName,
-        groups.code2,
-        codeHash,
-        groups.customAlt2
-      );
+      return generateHtml(file, groups.code2, codeHash, groups.customAlt2);
     }
 
     return match;
@@ -287,7 +275,7 @@ async function processFile(file: FileName) {
   }
 
   if (fileHash !== getHash(processed)) {
-    fs.writeFileSync(fullFileName, processed);
+    fs.writeFileSync(file, processed);
   }
 
   return hashes;
@@ -327,11 +315,17 @@ async function checkGeneratedAssets(writtenAssets: Set<string>) {
 }
 
 async function main() {
+  const argv = process.argv.slice(2);
+  const cwd = process.cwd();
+  const globPattern = argv[0] || INPUT_FILE_GLOB;
   const writtenAssets: Set<string> = new Set();
-  const files = await fastGlob(INPUT_FILE_GLOB, {
-    cwd: path.resolve(__dirname, INPUT_FILE_CWD),
+  const files = await fastGlob(globPattern, {
+    absolute: true,
+    ignore: ["node_modules"],
   });
+
   for (const file of files) {
+    console.log(`Processing ${path.relative(cwd, file)}...`);
     const hashes = await processFile(file);
     hashes.forEach((hash) => writtenAssets.add(`${hash}.${OUTPUT_FORMAT}`));
   }
