@@ -12,5 +12,4 @@ jobs:
         run: |
           git config --global user.name 'bot'
           git config --global user.email 'bot@users.noreply.github.com'
-          git commit -am "Generated documentation"
-          git push
+          git diff-index --quiet HEAD || (git add . && git commit -m'[bot] generated docs' --allow-empty && git push -f)
