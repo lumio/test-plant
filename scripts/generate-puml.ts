@@ -142,7 +142,7 @@ async function processFile(file: FileName) {
   const hashesFileMap: { [key: string]: FileName } = {};
 
   const processed = raw.replace(PUML_REGEX, (match) => {
-    const parsed = CODE_REGEX.exec(match) || GENERATED_REGEX.exec(match);
+    const parsed = GENERATED_REGEX.exec(match) || CODE_REGEX.exec(match);
 
     if (parsed == null) {
       return match;
