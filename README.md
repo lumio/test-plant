@@ -13,7 +13,7 @@ npx ts-node scripts/generate-puml.ts
 
 ```puml
 @startuml
-Alice -> Bob: Authentication Request
+Alice2 -> Bob: Authentication Request
 Bob --> Alice: Authentication Response
 
 Alice -> Bob: Another authentication Request
