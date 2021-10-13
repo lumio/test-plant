@@ -46,6 +46,13 @@ interface ArgOptions {
   rewriteAll: boolean;
 }
 
+interface GeneratedReplacementResult {
+  generateFromCode?: string;
+  file?: string;
+  codeHash?: string;
+  generated?: string;
+}
+
 const defaultOptions = {
   rewriteAll: false,
 };
@@ -185,7 +192,7 @@ function generatePlantUML(
     child.stdout.on("data", (chunk) => {
       output.push(chunk);
     });
-    child.on("close", (res) => {
+    child.on("close", () => {
       fs.writeFileSync(fileName, Buffer.concat(output));
       resolve(fileName);
     });
@@ -200,9 +207,95 @@ function generatePlantUML(
 }
 
 /**
- * TODO: Split up into multiple functions
+ * Generates multiple UMLs from a map
+ * @param hashesToGenerate
+ * @param hashesFileMap
+ */
+async function generatePlantUmlFromHashMap(
+  hashesToGenerate: { [key: string]: string },
+  hashesFileMap: { [key: string]: string }
+) {
+  const promises: Promise<any>[] = [];
+  for (const entry of Object.entries(hashesToGenerate)) {
+    const [codeHash, code] = entry;
+    console.log(`Generating ${codeHash}...`);
+    promises.push(generatePlantUML(hashesFileMap[codeHash], code, codeHash));
+  }
+  await Promise.all(promises);
+}
+
+/**
+ * TODO: add description
+ * @param file
+ * @param match
+ * @param groups
+ * @param options
+ */
+function updateGeneratedHtml(
+  file: FileName,
+  match: string,
+  groups: any,
+  options: ArgOptions
+): GeneratedReplacementResult | string {
+  const currentHash = groups.hash;
+  const codeHash = getHash(groups.code1);
+  const diff = currentHash !== codeHash;
+
+  if (diff) {
+    return {
+      generateFromCode: groups.code1,
+      file,
+      codeHash,
+      generated: generateHtml(
+        file,
+        groups.code1,
+        codeHash,
+        groups.customAlt1 || groups.alt || DEFAULT_ALT,
+        groups.toggleText || DEFAULT_TOGGLE_TEXT
+      ),
+    };
+  } else if (!diff && options.rewriteAll) {
+    return {
+      generateFromCode: groups.code1,
+      file,
+      codeHash,
+    };
+  }
+
+  return {
+    codeHash: currentHash,
+    generated: match,
+  };
+}
+
+/**
+ * TODO: better description
+ * Generates toggle HTML from plantUML
+ * @param file
+ * @param match
+ * @param groups
+ */
+function generateHtmlFromCodeBlock(
+  file: FileName,
+  match: string,
+  groups: any
+): GeneratedReplacementResult | string {
+  if (isIndentedCodeBlock(match)) {
+    return match;
+  }
+  const codeHash = getHash(groups.code2);
+  return {
+    generateFromCode: groups.code2,
+    file,
+    codeHash,
+    generated: generateHtml(file, groups.code2, codeHash, groups.customAlt2),
+  };
+}
+
+/**
  * Processes a file and either generate the HTML or update it
- * @param file The file to be processed
+ * @param file    The file to be processed
+ * @param options Options on how to process given file
  */
 async function processFile(file: FileName, options = defaultOptions) {
   const raw = fs.readFileSync(file, "utf8");
@@ -224,55 +317,34 @@ async function processFile(file: FileName, options = defaultOptions) {
       return match;
     }
 
+    let result;
     if (groups.code1) {
-      const currentHash = groups.hash;
-      const codeHash = getHash(groups.code1);
-      const diff = currentHash !== codeHash;
-
-      if (diff) {
-        hashesToGenerate[codeHash] = groups.code1;
-        hashesFileMap[codeHash] = file;
-        hashes.push(codeHash);
-        return generateHtml(
-          file,
-          groups.code1,
-          codeHash,
-          groups.customAlt1 || groups.alt || DEFAULT_ALT,
-          groups.toggleText || DEFAULT_TOGGLE_TEXT
-        );
-      } else if (!diff && options.rewriteAll) {
-        hashesToGenerate[codeHash] = groups.code1;
-        hashesFileMap[codeHash] = file;
-        hashes.push(codeHash);
-      } else {
-        hashes.push(currentHash);
-      }
-      return match;
+      result = updateGeneratedHtml(file, match, groups, options);
     } else if (groups.code2) {
-      if (isIndentedCodeBlock(match)) {
-        return match;
-      }
-      const codeHash = getHash(groups.code2);
-      hashes.push(codeHash);
-      hashesToGenerate[codeHash] = groups.code2;
-      hashesFileMap[codeHash] = file;
-      return generateHtml(file, groups.code2, codeHash, groups.customAlt2);
+      result = generateHtmlFromCodeBlock(file, match, groups);
     }
 
-    return match;
+    if (typeof result === "string") {
+      return result;
+    }
+    if (result == null) {
+      return match;
+    }
+
+    if (result.codeHash) {
+      hashes.push(result.codeHash);
+      if (result.generateFromCode) {
+        hashesToGenerate[result.codeHash] = result.generateFromCode;
+      }
+      if (result.file) {
+        hashesFileMap[result.codeHash] = result.file;
+      }
+    }
+
+    return result.generated || match;
   });
 
-  for (const entry of Object.entries(hashesToGenerate)) {
-    const [codeHash, code] = entry;
-    try {
-      console.log(`Generating ${codeHash}...`);
-      await generatePlantUML(hashesFileMap[codeHash], code, codeHash);
-    } catch (e) {
-      console.error(`Error while processing ${file}!`);
-      console.error(`Code:\n${code}`);
-      console.error(e);
-    }
-  }
+  await generatePlantUmlFromHashMap(hashesToGenerate, hashesFileMap);
 
   if (fileHash !== getHash(processed)) {
     fs.writeFileSync(file, processed);
@@ -340,6 +412,7 @@ async function main() {
     hashes.forEach((hash) => writtenAssets.add(`${hash}.${OUTPUT_FORMAT}`));
   }
 
+  console.log("Cleanup...");
   await checkGeneratedAssets(writtenAssets);
   console.log("Done");
 }
