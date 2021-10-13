@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="466px" preserveAspectRatio="none" style="width:650px;height:466px;" version="1.1" viewBox="0 0 650 466" width="650px" zoomAndPan="magnify"><defs><filter height="300%" id="fuj4ikpkl2tx1" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacingAndGlyphs" textLength="325" x="157.5" y="16.708">"OSCIED Charms Relations (Simple)"</text><path d="M37.0654,49.3966 C47.2666,29.1375 62.3593,33.4076 73.4622,48.4674 C85.0953,29.098 104.3144,26.0529 117.3729,46.9116 C128.3907,26.1105 147.1983,25.1906 157.9534,47.1608 C169.4884,25.2064 185.8611,25.4742 198.4921,46.1177 C210.6679,24.786 227.8282,24.4722 240.5998,45.5258 C252.0145,26.3728 262.9149,28.2687 275.9229,43.9082 C291.7784,22.4238 308.3134,24.4931 320.8348,47.2898 C334.5115,28.5758 346.7998,29.5666 361.29,46.363 C372.6193,27.4755 384.3231,29.1006 397.8853,43.9402 C415.2012,25.3896 429.8625,24.4596 441.0465,49.9496 C451.9124,30.7531 465.0471,31.6364 478.7434,46.8487 C492.3865,28.7075 509.0862,28.8561 517.9361,51.4593 C529.7719,32.422 546.9932,31.9484 560.4316,49.6033 C574.1883,32.0136 591.4627,29.3355 603,51.9531 C604.6508,50.4538 606.0883,51.0193 606.6484,53.0731 C633.1943,69.9869 633.2965,86.6176 606.4088,103.2764 C630.6677,114.3014 630.5569,130.9749 612.578,147.8463 C632.8251,160.3366 638.7083,176.8881 617.5789,193.8739 C638.8566,205.5655 636.0714,223.886 617.7651,235.7536 C635.4386,251.5236 638.7458,267.6897 614.8059,280.7213 C632.8211,295.8729 635.9593,318.3612 609.6594,328.7657 C633.6481,341.391 632.6234,360.9843 612.4187,376.1815 C634.3844,398.3207 625.2636,420.06 596,424.9531 C600.9219,422.4945 604.2372,425.5928 603.1722,430.6592 C589.6412,450.7579 573.0903,451.6692 558.9434,431.3329 C546.5326,453.3269 526.1815,451.1355 517.3958,427.9958 C506.2917,447.9699 490.8666,450.0082 475.5529,432.7234 C461.4896,450.6734 445.5852,447.3591 437.1231,427.0912 C425.4216,444.1265 409.9814,450.4652 396.3602,429.1306 C388.2717,452.1093 372.4313,452.7926 357.7521,435.4395 C343.3747,454.9017 328.5146,448.183 318.3119,430.9522 C304.6952,446.2964 292.4312,448.7011 279.7017,429.9475 C265.0576,450.5197 249.2348,453.7747 234.7262,429.8106 C224.5068,447.8669 207.2108,450.181 194.9247,432.0859 C183.909,446.1194 165.6253,445.0295 158.0154,428.0345 C147.2025,447.8918 126.3996,446.9222 114.4283,429.3847 C104.999,448.9906 86.8728,451.0406 75.9217,430.8575 C54.6045,447.8292 34.2748,448.502 25,417.9531 C27.4307,416.383 28.8249,416.9434 29.5304,419.7421 C9.5004,408.0432 11.7005,390.6895 29.5551,379.0135 C4.5951,364.3913 4.9716,340.788 31.3248,327.944 C10.0978,314.2571 8.4036,300.0245 27.5061,282.9173 C7.0779,270.0407 3.4275,253.2538 24.5484,237.6617 C3.6911,218.671 8.2461,204.4699 30.1137,190.5234 C11.2707,174.8804 9.5047,158.265 31.2526,143.6072 C9.8248,133.5856 5.7397,115.411 25.4878,99.952 C2.6095,79.7087 0.2698,58.7304 32,44.9531 C35.7566,43.3579 37.7606,45.9169 37.0654,49.3966 " fill="#FFFFFF" style="stroke: #000000; stroke-width: 1.5;"/><!--MD5=[ec370b6abf6afbbd63f8172d2904b8c0]
+entity juju--><ellipse cx="410" cy="69.9531" fill="#FEFECE" filter="url(#fuj4ikpkl2tx1)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="24" x="398" y="99.9482">JuJu</text><!--MD5=[e2307af040e3f87d22824e7603ca28ec]
+entity api--><ellipse cx="220" cy="289.9531" fill="#FEFECE" filter="url(#fuj4ikpkl2tx1)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="21" x="209.5" y="319.9482">API</text><!--MD5=[a5a6ae0ba01c8a4589ab26bd33e87aad]
+entity storage--><ellipse cx="355" cy="399.9531" fill="#FEFECE" filter="url(#fuj4ikpkl2tx1)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="54" x="328" y="429.9482">Storage</text><!--MD5=[a0fc4214121922e68a8615f120b83cce]
+entity transform--><ellipse cx="310" cy="289.9531" fill="#FEFECE" filter="url(#fuj4ikpkl2tx1)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="70" x="275" y="319.9482">Transform</text><!--MD5=[1fe25e6ad2a661c9f8478b5f50e2a15d]
+entity publisher--><ellipse cx="400" cy="289.9531" fill="#FEFECE" filter="url(#fuj4ikpkl2tx1)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="64" x="368" y="319.9482">Publisher</text><!--MD5=[e9053c6dbb891ad4199c45de881c9d13]
+entity website--><ellipse cx="34" cy="289.9531" fill="#FEFECE" filter="url(#fuj4ikpkl2tx1)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="56" x="6" y="319.9482">Website</text><!--MD5=[8c2c2f45bb6f3525ee06b078af4d90cf]
+entity JuJu--><rect fill="#6A9EFF" filter="url(#fuj4ikpkl2tx1)" height="49.7891" style="stroke: #000000; stroke-width: 1.5;" width="74" x="454" y="44.9531"/><rect fill="#6A9EFF" height="10" style="stroke: #000000; stroke-width: 1.5;" width="15" x="508" y="49.9531"/><rect fill="#6A9EFF" height="2" style="stroke: #000000; stroke-width: 1.5;" width="4" x="506" y="51.9531"/><rect fill="#6A9EFF" height="2" style="stroke: #000000; stroke-width: 1.5;" width="4" x="506" y="55.9531"/><text fill="#000000" font-family="sans-serif" font-size="17" lengthAdjust="spacingAndGlyphs" textLength="34" x="469" y="80.7329">JuJu</text><!--MD5=[cda190aec85529d7ef2e1486252d4310]
+entity WebUI--><rect fill="#6A9EFF" filter="url(#fuj4ikpkl2tx1)" height="49.7891" style="stroke: #000000; stroke-width: 1.5;" width="97" x="78.5" y="264.9531"/><rect fill="#6A9EFF" height="10" style="stroke: #000000; stroke-width: 1.5;" width="15" x="155.5" y="269.9531"/><rect fill="#6A9EFF" height="2" style="stroke: #000000; stroke-width: 1.5;" width="4" x="153.5" y="271.9531"/><rect fill="#6A9EFF" height="2" style="stroke: #000000; stroke-width: 1.5;" width="4" x="153.5" y="275.9531"/><text fill="#000000" font-family="sans-serif" font-size="17" lengthAdjust="spacingAndGlyphs" textLength="57" x="93.5" y="300.7329">WebUI</text><!--MD5=[80aa38db62ea8b6ade7a1acd8b93c349]
+entity Orchestra--><rect fill="#6A9EFF" filter="url(#fuj4ikpkl2tx1)" height="49.7891" style="stroke: #000000; stroke-width: 1.5;" width="121" x="444.5" y="264.9531"/><rect fill="#6A9EFF" height="10" style="stroke: #000000; stroke-width: 1.5;" width="15" x="545.5" y="269.9531"/><rect fill="#6A9EFF" height="2" style="stroke: #000000; stroke-width: 1.5;" width="4" x="543.5" y="271.9531"/><rect fill="#6A9EFF" height="2" style="stroke: #000000; stroke-width: 1.5;" width="4" x="543.5" y="275.9531"/><text fill="#000000" font-family="sans-serif" font-size="17" lengthAdjust="spacingAndGlyphs" textLength="81" x="459.5" y="300.7329">Orchestra</text><!--MD5=[4f78d112092d4a767d1d899cdc1eb9c4]
+entity Transform--><rect fill="#6A9EFF" filter="url(#fuj4ikpkl2tx1)" height="49.7891" style="stroke: #000000; stroke-width: 1.5;" width="126" x="190" y="154.9531"/><rect fill="#6A9EFF" height="10" style="stroke: #000000; stroke-width: 1.5;" width="15" x="296" y="159.9531"/><rect fill="#6A9EFF" height="2" style="stroke: #000000; stroke-width: 1.5;" width="4" x="294" y="161.9531"/><rect fill="#6A9EFF" height="2" style="stroke: #000000; stroke-width: 1.5;" width="4" x="294" y="165.9531"/><text fill="#000000" font-family="sans-serif" font-size="17" lengthAdjust="spacingAndGlyphs" textLength="86" x="205" y="190.7329">Transform</text><!--MD5=[b9060e1352b009711fbb9730f967b58f]
+entity Publisher--><rect fill="#6A9EFF" filter="url(#fuj4ikpkl2tx1)" height="49.7891" style="stroke: #000000; stroke-width: 1.5;" width="117" x="351.5" y="154.9531"/><rect fill="#6A9EFF" height="10" style="stroke: #000000; stroke-width: 1.5;" width="15" x="448.5" y="159.9531"/><rect fill="#6A9EFF" height="2" style="stroke: #000000; stroke-width: 1.5;" width="4" x="446.5" y="161.9531"/><rect fill="#6A9EFF" height="2" style="stroke: #000000; stroke-width: 1.5;" width="4" x="446.5" y="165.9531"/><text fill="#000000" font-family="sans-serif" font-size="17" lengthAdjust="spacingAndGlyphs" textLength="77" x="366.5" y="190.7329">Publisher</text><!--MD5=[cf25d34b6f9695ab689953484c0b6ae1]
+entity Storage--><rect fill="#6A9EFF" filter="url(#fuj4ikpkl2tx1)" height="49.7891" style="stroke: #000000; stroke-width: 1.5;" width="105" x="448.5" y="374.9531"/><rect fill="#6A9EFF" height="10" style="stroke: #000000; stroke-width: 1.5;" width="15" x="533.5" y="379.9531"/><rect fill="#6A9EFF" height="2" style="stroke: #000000; stroke-width: 1.5;" width="4" x="531.5" y="381.9531"/><rect fill="#6A9EFF" height="2" style="stroke: #000000; stroke-width: 1.5;" width="4" x="531.5" y="385.9531"/><text fill="#000000" font-family="sans-serif" font-size="17" lengthAdjust="spacingAndGlyphs" textLength="65" x="463.5" y="410.7329">Storage</text><!--MD5=[f2f2ea6d7454c46e289b3df413e51d8f]
+link juju to JuJu--><path d="M419.1758,69.9531 C430.7724,69.9531 442.369,69.9531 453.9656,69.9531 " fill="none" id="juju-JuJu" style="stroke: #222266; stroke-width: 1.0;"/><!--MD5=[c9b9d31024179afb0e8237a2b3ec2749]
+link website to WebUI--><path d="M43.082,289.9531 C54.883,289.9531 66.684,289.9531 78.4849,289.9531 " fill="none" id="website-WebUI" style="stroke: #222266; stroke-width: 1.0;"/><!--MD5=[3cbc632372f71a09930494dcdc260733]
+reverse link juju to WebUI--><path d="M395.7928,70.8829 C355.1585,74.3033 237.2634,89.6559 173,154.9531 C143.3872,185.0423 132.815,234.9346 129.0563,264.9048 " fill="none" id="juju&lt;-WebUI" style="stroke: #222266; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#222266" points="400.7869,70.4909,391.5014,67.2078,395.8022,70.8824,392.1277,75.1832,400.7869,70.4909" style="stroke: #222266; stroke-width: 1.0;"/><!--MD5=[e293b3f906f6c66d57d5aed9c30ca8a2]
+link WebUI to storage--><path d="M175.6321,313.4159 C228.2683,338.8106 308.9858,377.7533 341.1125,393.253 " fill="none" id="WebUI-&gt;storage" style="stroke: #222266; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#222266" points="345.8396,395.5336,339.4719,388.0202,341.3363,393.3609,335.9956,395.2254,345.8396,395.5336" style="stroke: #222266; stroke-width: 1.0;"/><!--MD5=[9ccd6882b1cfc3b6dbb2a6775873e9f5]
+link WebUI to api--><path d="M175.6797,289.9531 C185.7048,289.9531 195.7299,289.9531 205.755,289.9531 " fill="none" id="WebUI-&gt;api" style="stroke: #222266; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#222266" points="210.9974,289.9531,201.9974,285.9531,205.9974,289.9531,201.9974,293.9531,210.9974,289.9531" style="stroke: #222266; stroke-width: 1.0;"/><!--MD5=[03769816707605e24874bfc3558fddc2]
+link api to Orchestra--><path d="M229.0457,281.1008 C243.132,268.005 271.7915,244.0397 301.5,234.9531 C347.401,220.9139 363.1289,222.5547 409.5,234.9531 C431.6803,240.8835 454.0505,253.3391 471.5589,264.8995 " fill="none" id="api-Orchestra" style="stroke: #222266; stroke-width: 1.0;"/><!--MD5=[ddd80ef60e5ef0be09ea26344d5fc5e4]
+link transform to Orchestra--><path d="M319.0457,281.1008 C333.132,268.005 361.7915,244.0397 391.5,234.9531 C423.1179,225.2825 456.925,246.1556 479.3383,264.9048 " fill="none" id="transform-Orchestra" style="stroke: #222266; stroke-width: 1.0;"/><!--MD5=[41840821f329055b6ec76b82e5d2a421]
+link publisher to Orchestra--><path d="M409.0234,289.9531 C420.7706,289.9531 432.5177,289.9531 444.2648,289.9531 " fill="none" id="publisher-Orchestra" style="stroke: #222266; stroke-width: 1.0;"/><!--MD5=[fd08070ce6a308141f34ac2afee15c43]
+reverse link juju to Orchestra--><path d="M422.9135,82.501 C442.5217,101.8502 478.3409,138.4574 486,154.9531 C502.546,190.5889 505.6229,236.7731 505.7413,264.842 " fill="none" id="juju&lt;-Orchestra" style="stroke: #222266; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#222266" points="419.2211,78.8723,422.8364,88.0337,422.7872,82.377,428.4439,82.3279,419.2211,78.8723" style="stroke: #222266; stroke-width: 1.0;"/><!--MD5=[fb3e878d3f5f274a770338af7d39c399]
+link Orchestra to storage--><path d="M470.587,315.1893 C438.1516,338.9753 391.2233,373.3894 368.4316,390.1032 " fill="none" id="Orchestra-&gt;storage" style="stroke: #222266; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#222266" points="364.2066,393.2016,373.8297,391.105,368.2386,390.2448,369.0989,384.6538,364.2066,393.2016" style="stroke: #222266; stroke-width: 1.0;"/><!--MD5=[2cfacb86648284df18dc4025b89794fa]
+reverse link juju to Transform--><path d="M396.542,79.3823 C372.8639,95.972 323.0232,130.8923 288.7792,154.8849 " fill="none" id="juju&lt;-Transform" style="stroke: #222266; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#222266" points="400.6491,76.5047,390.983,78.3931,396.5542,79.3738,395.5735,84.945,400.6491,76.5047" style="stroke: #222266; stroke-width: 1.0;"/><!--MD5=[c7c0534ddbe0a096fd39b63633896edf]
+link Transform to storage--><path d="M255.2187,205.02 C258.4844,233.0492 266.2493,279.198 284,314.9531 C298.6606,344.4838 325.5347,372.5889 341.6839,387.9297 " fill="none" id="Transform-&gt;storage" style="stroke: #222266; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#222266" points="345.5446,391.548,341.713,382.475,341.8964,388.1289,336.2425,388.3122,345.5446,391.548" style="stroke: #222266; stroke-width: 1.0;"/><!--MD5=[26f2145258bb946392be4264941a8c75]
+link Transform to transform--><path d="M266.077,205.1893 C277.4934,227.2211 293.6348,258.3711 302.836,276.1278 " fill="none" id="Transform-&gt;transform" style="stroke: #222266; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#222266" points="305.2375,280.7623,304.648,270.9311,302.937,276.323,297.5451,274.612,305.2375,280.7623" style="stroke: #222266; stroke-width: 1.0;"/><!--MD5=[3089abc177ed4a3c5a45e746b1d612c1]
+reverse link juju to Publisher--><path d="M410,84.0471 C410,101.9041 410,132.9908 410,154.9236 " fill="none" id="juju&lt;-Publisher" style="stroke: #222266; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#222266" points="410,78.9549,406,87.9549,410,83.9549,414,87.9549,410,78.9549" style="stroke: #222266; stroke-width: 1.0;"/><!--MD5=[b099c5e31befe7ade59eb62557a132e6]
+link Publisher to storage--><path d="M397.3458,204.9964 C389.4708,221.6057 379.7754,244.1032 374,264.9531 C362.0758,308.0009 357.4068,360.9481 355.7763,385.803 " fill="none" id="Publisher-&gt;storage" style="stroke: #222266; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#222266" points="355.4567,390.9439,360.0077,382.2096,355.7671,385.9536,352.0232,381.7129,355.4567,390.9439" style="stroke: #222266; stroke-width: 1.0;"/><!--MD5=[c358e924f5976ea10609a9b885a45a79]
+link Publisher to publisher--><path d="M407.7058,205.1893 C405.72,227.0328 402.9194,257.8393 401.2985,275.6696 " fill="none" id="Publisher-&gt;publisher" style="stroke: #222266; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#222266" points="400.8355,280.7623,405.634,272.1615,401.2882,275.7829,397.6668,271.4371,400.8355,280.7623" style="stroke: #222266; stroke-width: 1.0;"/><!--MD5=[ea47db41f171ee94fcd799857f4bfcd0]
+link storage to Storage--><path d="M364.125,399.9531 C392.1951,399.9531 420.2651,399.9531 448.3352,399.9531 " fill="none" id="storage-Storage" style="stroke: #222266; stroke-width: 1.0;"/><!--MD5=[0c2dfc3a1e965285de57aeea4d532e38]
+reverse link juju to Storage--><path d="M423.1155,82.1046 C427.526,86.189 432.4748,90.7696 437,94.9531 C510.131,162.5628 551.9205,170.3313 583,264.9531 C589.9346,286.0656 591.3193,294.3469 583,314.9531 C573.4046,338.7198 553.6294,359.5424 535.9033,374.6296 " fill="none" id="juju&lt;-Storage" style="stroke: #222266; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="#222266" points="419.2439,78.5188,423.1288,87.5691,422.9122,81.9164,428.5649,81.6998,419.2439,78.5188" style="stroke: #222266; stroke-width: 1.0;"/><!--MD5=[349731a982a98282a0cccc83310e4387]
+@startuml
+
+skinparam component {
+    FontColor          black
+    AttributeFontColor black
+    FontSize           17
+    AttributeFontSize  15
+    AttributeFontname  Droid Sans Mono
+    BackgroundColor    #6A9EFF
+    BorderColor        black
+    ArrowColor         #222266
+}
+
+title "OSCIED Charms Relations (Simple)"
+skinparam componentStyle uml2
+
+cloud {
+    interface "JuJu" as juju
+    interface "API" as api
+    interface "Storage" as storage
+    interface "Transform" as transform
+    interface "Publisher" as publisher
+    interface "Website" as website
+
+    juju - [JuJu]
+
+    website - [WebUI]
+    [WebUI] .up.> juju
+    [WebUI] .down.> storage
+    [WebUI] .right.> api
+
+    api - [Orchestra]
+    transform - [Orchestra]
+    publisher - [Orchestra]
+    [Orchestra] .up.> juju
+    [Orchestra] .down.> storage
+
+    [Transform] .up.> juju
+    [Transform] .down.> storage
+    [Transform] ..> transform
+
+    [Publisher] .up.> juju
+    [Publisher] .down.> storage
+    [Publisher] ..> publisher
+
+    storage - [Storage]
+    [Storage] .up.> juju
+}
+
+@enduml
+
+PlantUML version 1.2020.06(Sun Apr 05 12:38:32 GMT 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 14-ea+33
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

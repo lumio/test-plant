@@ -6,7 +6,10 @@ import { exec } from "child_process";
 import stream from "stream";
 import fastGlob from "fast-glob";
 
-const REWRITE_ALL = Boolean(process.env.REWRITE_ALL) || false;
+const REWRITE_ALL =
+  process.argv.includes("--rewrite-all") ||
+  Boolean(process.env.REWRITE_ALL) ||
+  false;
 const INPUT_FILE_GLOB = "**/*.md";
 const INPUT_FILE_CWD = "../docs";
 const OUTPUT_FILES = "../docs/generated-assets";
@@ -239,7 +242,7 @@ async function checkGeneratedAssets(writtenAssets: Set<string>) {
   writtenAssets.forEach((writtenAsset) => {
     if (!generatedAssets.includes(writtenAsset)) {
       throw new Error(
-        `Missing asset ${writtenAsset}! Run script with env var REWRITE_ALL=1`
+        `Missing asset ${writtenAsset}! Run script with arg --rewrite-all`
       );
     }
   });

@@ -1,6 +1,6 @@
 # Docs
 
-This is just a simple demo on how to have plantUML rendered in a markdown file.
+This is just a simple demo on how to have plantUML rendered in a markdown file in GitHub Markdown files.
 
 Just create a simple code block with the `puml` format and the `scripts/generate-puml.ts` takes care of the rest.
 
@@ -63,3 +63,8 @@ Foo -> Foo7: To queue
 @enduml
 ```
 </details>
+
+---
+
+As this is just a demo on how to create some documentation, [links to other pages](subpage.md) should not be missed here.
+Even [nested subpages](nested/subpage.md) are no big deal for GitHub.
