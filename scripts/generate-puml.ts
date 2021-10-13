@@ -39,16 +39,16 @@ const DEFAULT_ALT = "UML";
  */
 const DEFAULT_TOGGLE_TEXT = "source code";
 
-/**
- * Regenerate all plantUML diagrams
- */
-const REWRITE_ALL =
-  process.argv.includes("--rewrite-all") ||
-  Boolean(process.env.REWRITE_ALL) ||
-  false;
-
 type FileName = string;
 type Code = string;
+
+interface ArgOptions {
+  rewriteAll: boolean;
+}
+
+const defaultOptions = {
+  rewriteAll: false,
+};
 
 /**
  * The regex pattern to find already processed plantUML code blocks
@@ -204,7 +204,7 @@ function generatePlantUML(
  * Processes a file and either generate the HTML or update it
  * @param file The file to be processed
  */
-async function processFile(file: FileName) {
+async function processFile(file: FileName, options = defaultOptions) {
   const raw = fs.readFileSync(file, "utf8");
   const fileHash = getHash(raw);
 
@@ -240,7 +240,7 @@ async function processFile(file: FileName) {
           groups.customAlt1 || groups.alt || DEFAULT_ALT,
           groups.toggleText || DEFAULT_TOGGLE_TEXT
         );
-      } else if (!diff && REWRITE_ALL) {
+      } else if (!diff && options.rewriteAll) {
         hashesToGenerate[codeHash] = groups.code1;
         hashesFileMap[codeHash] = file;
         hashes.push(codeHash);
@@ -315,9 +315,19 @@ async function checkGeneratedAssets(writtenAssets: Set<string>) {
 }
 
 async function main() {
-  const argv = process.argv.slice(2);
+  // Naive way of "parsing" argv
+  let rewriteAll = false;
+  const argv = process.argv.slice(2).filter((option) => {
+    if (option === "--rewrite-all") {
+      rewriteAll = true;
+      return false;
+    }
+    return true;
+  });
+
   const cwd = process.cwd();
   const globPattern = argv[0] || INPUT_FILE_GLOB;
+
   const writtenAssets: Set<string> = new Set();
   const files = await fastGlob(globPattern, {
     absolute: true,
@@ -326,7 +336,7 @@ async function main() {
 
   for (const file of files) {
     console.log(`Processing ${path.relative(cwd, file)}...`);
-    const hashes = await processFile(file);
+    const hashes = await processFile(file, { rewriteAll });
     hashes.forEach((hash) => writtenAssets.add(`${hash}.${OUTPUT_FORMAT}`));
   }
 
