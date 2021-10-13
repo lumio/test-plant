@@ -18,18 +18,21 @@ const DEFAULT_TOGGLE_TEXT = "source code";
 type FileName = string;
 type Code = string;
 
+const GENERATED_PATTERN =
+  "(<!-- puml:(?<hash>.+?) -->\\s+!\\[(?<alt>.+?)\\]\\((?<file>.+?)\\)" +
+  "\\s+<details>\\s+<summary>(?<toggleText>.+?)<\\/summary>\\s+```puml( (?<customAlt1>.+?))?\\s+(?<code1>[\\s\\S]+?)```\\s+<\\/details>)";
+const CODE_PATTERN =
+  "(([ ]{4}|\\t)?```puml( (?<customAlt2>.+?))?\\s+(?<code2>[\\s\\S]+?)```)";
 const PUML_REGEX = new RegExp(
-  // Just to make sure that indented code blocks are getting ignored (e.g. giving an example on how to use this script
-  "(    ```puml[\\s\\S]+?```)" +
-    "|" +
-    // Parsing an already processed code block
-    "(<!-- puml:(?<hash>.+?) -->\\s+!\\[(?<alt>.+?)\\]\\((?<file>.+?)\\)" +
-    "\\s+<details>\\s+<summary>(?<toggleText>.+?)<\\/summary>\\s+```puml( (?<customAlt1>.+?))?\\s+(?<code1>[\\s\\S]+?)```\\s+<\\/details>)" +
+  // Parsing an already processed code block
+  GENERATED_PATTERN +
     "|" +
     // Parsing a regular code block
-    "((?!my)```puml( (?<customAlt2>.+?))?\\s+(?<code2>[\\s\\S]+?)```)",
+    CODE_PATTERN,
   "gm"
 );
+const GENERATED_REGEX = new RegExp(GENERATED_PATTERN);
+const CODE_REGEX = new RegExp(CODE_PATTERN);
 
 function getHash(code: string) {
   const newHash = createHash("sha256");
@@ -39,6 +42,25 @@ function getHash(code: string) {
 
 function getFileName(hash: string, base = "") {
   return path.join(base, `${hash}.${OUTPUT_FORMAT}`);
+}
+
+function isIndentedCodeBlock(match: string) {
+  const startsWithSpaceMatch = /^([ ]{4}|\t)/.exec(match);
+  if (startsWithSpaceMatch == null) {
+    return false;
+  }
+  const whitespace = startsWithSpaceMatch[0];
+  const lines = match.split("\n");
+  for (const line of lines) {
+    if (line.trim() === "") {
+      continue;
+    }
+    if (!line.startsWith(whitespace)) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 function generateHtml(
@@ -117,7 +139,8 @@ async function processFile(file: FileName) {
   const hashesFileMap: { [key: string]: FileName } = {};
 
   const processed = raw.replace(PUML_REGEX, (match) => {
-    const parsed = PUML_REGEX.exec(match);
+    const parsed = CODE_REGEX.exec(match) || GENERATED_REGEX.exec(match);
+
     if (parsed == null) {
       return match;
     }
@@ -152,6 +175,9 @@ async function processFile(file: FileName) {
       }
       return match;
     } else if (groups.code2) {
+      if (isIndentedCodeBlock(match)) {
+        return match;
+      }
       const codeHash = getHash(groups.code2);
       hashes.push(codeHash);
       hashesToGenerate[codeHash] = groups.code2;

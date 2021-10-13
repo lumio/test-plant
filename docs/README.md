@@ -18,6 +18,11 @@ For example the following code block will result in an image:
 
 When running `npx ts-node scripts/generate-puml.ts` this is the output:
 
+<!-- puml:3d69686b72944c72dca07e8358d9d7544986d9aecc994f7e31707b6d8587324e -->
+![UML](generated-assets/3d69686b72944c72dca07e8358d9d7544986d9aecc994f7e31707b6d8587324e.svg)
+<details>
+<summary>source code</summary>
+
 ```puml
 @startuml
 Alice -> Bob: Authentication Request
@@ -27,10 +32,16 @@ Alice -> Bob: Another authentication Request
 Alice <-- Bob: Another authentication Response
 @enduml
 ```
+</details>
 
 ---
 
 This means that even multiple diagrams can be rendered with no problem
+
+<!-- puml:1eaa518b726cfca05f3c061a25caabb9c3c237a1ed32b3923d80d68b7b492407 -->
+![UML](generated-assets/1eaa518b726cfca05f3c061a25caabb9c3c237a1ed32b3923d80d68b7b492407.svg)
+<details>
+<summary>source code</summary>
 
 ```puml
 @startuml
@@ -51,3 +62,4 @@ Foo -> Foo6 : To collections
 Foo -> Foo7: To queue
 @enduml
 ```
+</details>
