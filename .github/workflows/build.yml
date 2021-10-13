@@ -10,6 +10,6 @@ jobs:
         run: npx ts-node scripts/generate-puml.ts
       - name: Commit changes
         run: |
-          git config --global user.name 'bot'
-          git config --global user.email 'bot@users.noreply.github.com'
+          git config --global user.name 'fisbot'
+          git config --global user.email 'fisbot@users.noreply.github.com'
           git diff-index --quiet HEAD || (git add . && git commit -m'[bot] generated docs' --allow-empty && git push -f)

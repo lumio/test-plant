@@ -13,7 +13,7 @@ npx ts-node scripts/generate-puml.ts <glob-pattern>
 
 ```puml
 @startuml
-Alice -> Bob: Authentication Request
+Alice -> Bob: Authentication Request1
 Bob --> Alice: Authentication Response
 
 Alice -> Bob: Another authentication Request
