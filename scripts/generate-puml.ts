@@ -69,6 +69,16 @@ const GENERATED_PATTERN =
 const CODE_PATTERN =
   "(([ ]{4}|\\t)?```puml( (?<customAlt2>.+?))?\\s+(?<code2>[\\s\\S]+?)```)";
 /**
+ * The regex pattern to find a generated image from a linked puml file
+ */
+const GENERATED_PUML_IMAGE_PATTERN =
+  "(<!-- puml-ref:(?<hashRef>.+?) -->\\s+!\\[(?<altRef>.+?)\\]\\((?<fileGeneratedRef>.+?)\\))";
+/**
+ * The regex pattern to find image referencing a puml file
+ */
+const PUML_IMAGE_PATTERN =
+  "(([ ]{4}|\\t)?!\\[(?<altRefImage>.+?)\\]\\((?<filePumlRef>.+?\\.puml)\\))";
+/**
  * A combination of both the GENERATED_PATTERN and CODE_PATTERN to find both
  */
 const MAIN_REGEX = new RegExp(
@@ -76,9 +86,19 @@ const MAIN_REGEX = new RegExp(
   GENERATED_PATTERN +
     "|" +
     // Parsing a regular code block
-    CODE_PATTERN,
+    CODE_PATTERN +
+    "|" +
+    // Parsing an already processed puml image red
+    GENERATED_PUML_IMAGE_PATTERN +
+    "|" +
+    // Parsing a referenced puml image
+    PUML_IMAGE_PATTERN,
   "gm"
 );
+const GENERATED_PUML_IMAGE_PATTERN_REGEX = new RegExp(
+  GENERATED_PUML_IMAGE_PATTERN
+);
+const PUML_IMAGE_PATTERN_REGEX = new RegExp(PUML_IMAGE_PATTERN);
 const GENERATED_REGEX = new RegExp(GENERATED_PATTERN);
 const CODE_REGEX = new RegExp(CODE_PATTERN);
 
@@ -292,6 +312,44 @@ function generateHtmlFromCodeBlock(
   };
 }
 
+function generateImageRefFromPuml(
+  sourceFileName: FileName,
+  codeHash: string,
+  alt: string
+) {
+  const sourceDir = path.dirname(sourceFileName);
+  const assetDir = path.resolve(__dirname, OUTPUT_FOLDER);
+  const relativeAssetDir = path.relative(sourceDir, assetDir);
+  return [
+    `<!-- puml-ref:${codeHash} -->`,
+    `![${alt}](${getFileName(codeHash, relativeAssetDir)})`,
+  ].join("\n");
+}
+
+function generateFromPumlImage(
+  file: FileName,
+  match: string,
+  groups: any
+): GeneratedReplacementResult | string {
+  if (isIndentedCodeBlock(match)) {
+    return match;
+  }
+  const absoluteFileName = path.resolve(path.dirname(file), groups.filePumlRef);
+  try {
+    const puml = fs.readFileSync(absoluteFileName, "utf8");
+    const codeHash = getHash(puml);
+    return {
+      generateFromCode: puml,
+      file,
+      codeHash,
+      generated: generateImageRefFromPuml(file, codeHash, groups.altRefImage),
+    };
+  } catch (err) {
+    console.error((err as any)?.message || err);
+    return match;
+  }
+}
+
 /**
  * Processes a file and either generate the HTML or update it
  * @param file    The file to be processed
@@ -306,7 +364,11 @@ async function processFile(file: FileName, options = defaultOptions) {
   const hashesFileMap: { [key: string]: FileName } = {};
 
   const processed = raw.replace(MAIN_REGEX, (match) => {
-    const parsed = GENERATED_REGEX.exec(match) || CODE_REGEX.exec(match);
+    const parsed =
+      GENERATED_REGEX.exec(match) ||
+      CODE_REGEX.exec(match) ||
+      GENERATED_PUML_IMAGE_PATTERN_REGEX.exec(match) ||
+      PUML_IMAGE_PATTERN_REGEX.exec(match);
 
     if (parsed == null) {
       return match;
@@ -318,7 +380,11 @@ async function processFile(file: FileName, options = defaultOptions) {
     }
 
     let result;
-    if (groups.code1) {
+    if (groups.fileGeneratedRef) {
+      return match;
+    } else if (groups.filePumlRef) {
+      result = generateFromPumlImage(file, match, groups);
+    } else if (groups.code1) {
       result = updateGeneratedHtml(file, match, groups, options);
     } else if (groups.code2) {
       result = generateHtmlFromCodeBlock(file, match, groups);
