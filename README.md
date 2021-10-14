@@ -24,5 +24,4 @@ Alice <-- Bob: Another authentication Response
 
 You can also use files with the puml-extension as an image like so:
 
-<!-- puml-ref:b80259633f764148529e6d79f013e45adfa30b1a7d5d9a2e69e9edb89f9b52e6 -->
-![linked puml](docs/generated-assets/b80259633f764148529e6d79f013e45adfa30b1a7d5d9a2e69e9edb89f9b52e6.svg)
+![linked puml](./docs/test.puml)
