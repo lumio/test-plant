@@ -72,7 +72,7 @@ const CODE_PATTERN =
  * The regex pattern to find a generated image from a linked puml file
  */
 const GENERATED_PUML_IMAGE_PATTERN =
-  "(<!-- puml-ref:(?<hashRef>.+?) -->\\s+!\\[(?<altRef>.+?)\\]\\((?<fileGeneratedRef>.+?)\\))";
+  '(<!-- puml-ref:"(?<originalFilePumlRef>.+?)" puml:(?<hashRef>.+?) -->\\s+!\\[(?<altRef>.+?)\\]\\((?<fileGeneratedRef>.+?)\\))';
 /**
  * The regex pattern to find image referencing a puml file
  */
@@ -314,6 +314,7 @@ function generateHtmlFromCodeBlock(
 
 function generateImageRefFromPuml(
   sourceFileName: FileName,
+  refFile: FileName,
   codeHash: string,
   alt: string
 ) {
@@ -321,28 +322,47 @@ function generateImageRefFromPuml(
   const assetDir = path.resolve(__dirname, OUTPUT_FOLDER);
   const relativeAssetDir = path.relative(sourceDir, assetDir);
   return [
-    `<!-- puml-ref:${codeHash} -->`,
+    `<!-- puml-ref:"${refFile}" puml:${codeHash} -->`,
     `![${alt}](${getFileName(codeHash, relativeAssetDir)})`,
   ].join("\n");
 }
 
+/**
+ * TODO: add description and maybe a better fn name
+ * @param file
+ * @param match
+ * @param pumlRef
+ * @param alt
+ * @param hash
+ * @param options
+ */
 function generateFromPumlImage(
   file: FileName,
   match: string,
-  groups: any
+  pumlRef: FileName,
+  alt: string,
+  hash?: string,
+  options: ArgOptions = defaultOptions
 ): GeneratedReplacementResult | string {
   if (isIndentedCodeBlock(match)) {
     return match;
   }
-  const absoluteFileName = path.resolve(path.dirname(file), groups.filePumlRef);
+  const absoluteFileName = path.resolve(path.dirname(file), pumlRef);
   try {
     const puml = fs.readFileSync(absoluteFileName, "utf8");
     const codeHash = getHash(puml);
+    if (codeHash === hash && !options.rewriteAll) {
+      return {
+        file,
+        codeHash,
+        generated: match,
+      };
+    }
     return {
       generateFromCode: puml,
       file,
       codeHash,
-      generated: generateImageRefFromPuml(file, codeHash, groups.altRefImage),
+      generated: generateImageRefFromPuml(file, pumlRef, codeHash, alt),
     };
   } catch (err) {
     console.error((err as any)?.message || err);
@@ -381,9 +401,21 @@ async function processFile(file: FileName, options = defaultOptions) {
 
     let result;
     if (groups.fileGeneratedRef) {
-      return match;
+      result = generateFromPumlImage(
+        file,
+        match,
+        groups.originalFilePumlRef,
+        groups.altRef,
+        groups.hashRef,
+        options
+      );
     } else if (groups.filePumlRef) {
-      result = generateFromPumlImage(file, match, groups);
+      result = generateFromPumlImage(
+        file,
+        match,
+        groups.filePumlRef,
+        groups.altRefImage
+      );
     } else if (groups.code1) {
       result = updateGeneratedHtml(file, match, groups, options);
     } else if (groups.code2) {
